@@ -1,0 +1,9 @@
+[workspace]
+members = [
+    "webgl-rc",
+    "webgl-rc-macro",
+    "webgl-rc-example",
+]
+
+[profile.release]
+opt-level = "s"

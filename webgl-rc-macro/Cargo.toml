@@ -1,0 +1,11 @@
+[package]
+name = "webgl-rc-macro"
+version = "0.1.0"
+authors = ["Andrei Monkin <monkin.andrey@gmail.com>"]
+edition = "2018"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+regex = "1.5.6"
