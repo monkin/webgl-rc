@@ -2,6 +2,7 @@
 name = "webgl-rc-example"
 version = "0.1.0"
 authors = ["Andrei Monkin <monkin.andrey@gmail.com>"]
+repository = "https://github.com/monkin/webgl-rc"
 edition = "2018"
 
 [lib]
