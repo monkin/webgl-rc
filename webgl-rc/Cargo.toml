@@ -12,7 +12,7 @@ wasm-bindgen = "0.2.81"
 console_error_panic_hook = { version = "0.1.7", optional = true }
 js-sys = "0.3.58"
 num_enum = "0.5.7"
-webgl-rc-macro = { path = "../webgl-rc-macro", version = "0.1.0" }
+webgl-rc-macro = { path = "../webgl-rc-macro", version = "0.1.1" }
 
 [dependencies.web-sys]
 version = "0.3.58"
