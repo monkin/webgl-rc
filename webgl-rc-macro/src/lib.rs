@@ -1,3 +1,9 @@
+//! # GLSL Loading Macro
+//!
+//! [load_glsl] macro is similar to [std::include_str] but it has some differences:
+//! * it loads files from `glsl` directory at the project root,
+//! * it supports `#include <lib/color.glsl>` or `#incluide "../lib/color.glsl"` macro in the files.
+
 #![allow(dead_code)]
 
 extern crate proc_macro;
@@ -9,12 +15,6 @@ use std::path::Path;
 use std::io::Read;
 use regex::Regex;
 use std::env::VarError;
-
-//! # GLSL Loading Macro
-//!
-//! [load_glsl] macro is similar to [std::include_str] but it has some differences:
-//! * it loads files from `glsl` directory at the project root,
-//! * it supports `#include <lib/color.glsl>` or `#incluide "../lib/color.glsl"` macro in the files.
 
 #[derive(Debug)]
 enum Error {
