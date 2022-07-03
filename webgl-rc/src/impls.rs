@@ -1,6 +1,6 @@
 use super::data_buffer::Writable;
 use super::texture::Texture;
-use super::types::{type_mark, DataType, TypeMark};
+use super::types::{DataType, TypeMark};
 use crate::uniforms::{IntoUniform, Value};
 
 // f32
@@ -19,8 +19,6 @@ impl TypeMark for f32 {
     }
 }
 
-impl type_mark::Float for f32 {}
-
 impl IntoUniform for f32 {
     fn into_uniform(&self) -> Value {
         Value::Float(*self)
@@ -35,8 +33,6 @@ impl TypeMark for Texture {
     }
 }
 
-impl type_mark::Sampler for Texture {}
-
 impl IntoUniform for Texture {
     fn into_uniform(&self) -> Value {
         Value::Texture(self.clone())
@@ -50,8 +46,6 @@ impl TypeMark for Option<Texture> {
         DataType::Sampler
     }
 }
-
-impl type_mark::Sampler for Option<Texture> {}
 
 impl IntoUniform for Option<Texture> {
     fn into_uniform(&self) -> Value {
@@ -68,8 +62,6 @@ impl TypeMark for bool {
         DataType::Boolean
     }
 }
-
-impl type_mark::Boolean for bool {}
 
 impl From<bool> for Value {
     fn from(value: bool) -> Self {
@@ -90,8 +82,6 @@ impl TypeMark for [f32; 2] {
         DataType::Vec2
     }
 }
-
-impl type_mark::Vec2 for [f32; 2] {}
 
 impl IntoUniform for [f32; 2] {
     fn into_uniform(&self) -> Value {
@@ -118,8 +108,6 @@ impl TypeMark for [f32; 3] {
     }
 }
 
-impl type_mark::Vec3 for [f32; 3] {}
-
 impl IntoUniform for [f32; 3] {
     fn into_uniform(&self) -> Value {
         Value::Vec3(*self)
@@ -144,8 +132,6 @@ impl TypeMark for [f32; 4] {
         DataType::Vec4
     }
 }
-
-impl type_mark::Vec4 for [f32; 4] {}
 
 impl IntoUniform for [f32; 4] {
     fn into_uniform(&self) -> Value {
@@ -172,8 +158,6 @@ impl TypeMark for (f32, f32) {
     }
 }
 
-impl type_mark::Vec2 for (f32, f32) {}
-
 impl IntoUniform for (f32, f32) {
     fn into_uniform(&self) -> Value {
         Value::Vec2([self.0, self.1])
@@ -197,8 +181,6 @@ impl TypeMark for (f32, f32, f32) {
         DataType::Vec3
     }
 }
-
-impl type_mark::Vec3 for (f32, f32, f32) {}
 
 impl IntoUniform for (f32, f32, f32) {
     fn into_uniform(&self) -> Value {
@@ -224,8 +206,6 @@ impl TypeMark for (f32, f32, f32, f32) {
         DataType::Vec4
     }
 }
-
-impl type_mark::Vec4 for (f32, f32, f32, f32) {}
 
 impl IntoUniform for (f32, f32, f32, f32) {
     fn into_uniform(&self) -> Value {

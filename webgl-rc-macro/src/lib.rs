@@ -10,32 +10,11 @@ use std::io::Read;
 use regex::Regex;
 use std::env::VarError;
 
-/*
-TokenStream [
-    Ident { ident: "struct", span: #0 bytes(517..523) },
-    Ident { ident: "TriangleUniforms", span: #0 bytes(524..540) },
-    Group {
-        delimiter: Brace,
-        stream: TokenStream [
-            Ident { ident: "color", span: #0 bytes(547..552) },
-            Punct { ch: ':', spacing: Alone, span: #0 bytes(552..553) },
-            Group {
-                delimiter: Parenthesis,
-                stream: TokenStream [
-                    Ident { ident: "f32", span: #0 bytes(555..558) },
-                    Punct { ch: ',', spacing: Alone, span: #0 bytes(558..559) },
-                    Ident { ident: "f32", span: #0 bytes(560..563) },
-                    Punct { ch: ',', spacing: Alone, span: #0 bytes(563..564) },
-                    Ident { ident: "f32", span: #0 bytes(565..568) }
-                ],
-                span: #0 bytes(554..569)
-            },
-            Punct { ch: ',', spacing: Alone, span: #0 bytes(569..570) }
-        ],
-        span: #0 bytes(541..572)
-    }
-]
-*/
+//! # GLSL Loading Macro
+//!
+//! [load_glsl] macro is similar to [std::include_str] but it has some differences:
+//! * it loads files from `glsl` directory at the project root,
+//! * it supports `#include <lib/color.glsl>` or `#incluide "../lib/color.glsl"` macro in the files.
 
 #[derive(Debug)]
 enum Error {
@@ -326,6 +305,11 @@ fn load_glsl_impl(stream: TokenStream) -> Result<TokenStream, Error> {
     }
 }
 
+/// Load GLSL file from the project `glsl` folder and return it as a string.
+/// ```
+/// let vertex: &str = webgl_rc::load_glsl!("draw/vertex.glsl");
+/// let fragment: &str = webgl_rc::load_glsl!("draw/fragment.glsl");
+/// ```
 #[proc_macro]
 pub fn load_glsl(tokens: TokenStream) -> TokenStream {
     load_glsl_impl(tokens).unwrap_or_else(|error| error.into())

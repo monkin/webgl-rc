@@ -105,16 +105,3 @@ impl From<DataType> for u32 {
 pub trait TypeMark {
     fn data_type() -> DataType;
 }
-
-pub mod type_mark {
-    use super::{ TypeMark };
-    pub trait Boolean : TypeMark {}
-    pub trait Float : TypeMark {}
-    pub trait Vec2 : TypeMark {}
-    pub trait Vec3 : TypeMark {}
-    pub trait Vec4 : TypeMark {}
-    pub trait Mat2 : TypeMark {}
-    pub trait Mat3 : TypeMark {}
-    pub trait Mat4 : TypeMark {}
-    pub trait Sampler : TypeMark {}
-}

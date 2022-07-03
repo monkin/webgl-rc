@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import * as ReactDOM from "react-dom/client";
 import { Canvas } from "./canvas";
 
 (async () => {
@@ -11,5 +11,5 @@ import { Canvas } from "./canvas";
         return <Canvas init={create_context} paint={draw_triangle} />;
     }
 
-    ReactDOM.render(<GlExample />, document.getElementById("app"));
+    ReactDOM.createRoot(document.getElementById("app")!).render(<GlExample />);
 })();
