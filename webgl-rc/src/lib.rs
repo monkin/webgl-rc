@@ -16,5 +16,7 @@ pub use gl::*;
 pub use program::*;
 pub use settings::*;
 pub use texture::*;
+pub use uniforms::{UniformValue, IntoUniform};
+pub use types::{TypeMark, DataType};
 
 pub use webgl_rc_macro::*;

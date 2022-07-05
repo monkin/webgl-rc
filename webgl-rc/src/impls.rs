@@ -1,7 +1,7 @@
 use super::data_buffer::Writable;
 use super::texture::Texture;
 use super::types::{DataType, TypeMark};
-use crate::uniforms::{IntoUniform, Value};
+use crate::uniforms::{IntoUniform, UniformValue};
 
 // f32
 impl Writable for f32 {
@@ -20,8 +20,8 @@ impl TypeMark for f32 {
 }
 
 impl IntoUniform for f32 {
-    fn into_uniform(&self) -> Value {
-        Value::Float(*self)
+    fn into_uniform(&self) -> UniformValue {
+        UniformValue::Float(*self)
     }
 }
 
@@ -34,8 +34,8 @@ impl TypeMark for Texture {
 }
 
 impl IntoUniform for Texture {
-    fn into_uniform(&self) -> Value {
-        Value::Texture(self.clone())
+    fn into_uniform(&self) -> UniformValue {
+        UniformValue::Texture(self.clone())
     }
 }
 
@@ -48,10 +48,10 @@ impl TypeMark for Option<Texture> {
 }
 
 impl IntoUniform for Option<Texture> {
-    fn into_uniform(&self) -> Value {
+    fn into_uniform(&self) -> UniformValue {
         self.as_ref()
-            .map(|texture| Value::Texture(texture.clone()))
-            .unwrap_or(Value::None)
+            .map(|texture| UniformValue::Texture(texture.clone()))
+            .unwrap_or(UniformValue::None)
     }
 }
 
@@ -63,15 +63,15 @@ impl TypeMark for bool {
     }
 }
 
-impl From<bool> for Value {
+impl From<bool> for UniformValue {
     fn from(value: bool) -> Self {
-        Value::Boolean(value)
+        UniformValue::Boolean(value)
     }
 }
 
 impl IntoUniform for bool {
-    fn into_uniform(&self) -> Value {
-        Value::Boolean(*self)
+    fn into_uniform(&self) -> UniformValue {
+        UniformValue::Boolean(*self)
     }
 }
 
@@ -84,8 +84,8 @@ impl TypeMark for [f32; 2] {
 }
 
 impl IntoUniform for [f32; 2] {
-    fn into_uniform(&self) -> Value {
-        Value::Vec2(*self)
+    fn into_uniform(&self) -> UniformValue {
+        UniformValue::Vec2(*self)
     }
 }
 
@@ -109,8 +109,8 @@ impl TypeMark for [f32; 3] {
 }
 
 impl IntoUniform for [f32; 3] {
-    fn into_uniform(&self) -> Value {
-        Value::Vec3(*self)
+    fn into_uniform(&self) -> UniformValue {
+        UniformValue::Vec3(*self)
     }
 }
 
@@ -134,8 +134,8 @@ impl TypeMark for [f32; 4] {
 }
 
 impl IntoUniform for [f32; 4] {
-    fn into_uniform(&self) -> Value {
-        Value::Vec4(*self)
+    fn into_uniform(&self) -> UniformValue {
+        UniformValue::Vec4(*self)
     }
 }
 
@@ -159,8 +159,8 @@ impl TypeMark for (f32, f32) {
 }
 
 impl IntoUniform for (f32, f32) {
-    fn into_uniform(&self) -> Value {
-        Value::Vec2([self.0, self.1])
+    fn into_uniform(&self) -> UniformValue {
+        UniformValue::Vec2([self.0, self.1])
     }
 }
 
@@ -183,8 +183,8 @@ impl TypeMark for (f32, f32, f32) {
 }
 
 impl IntoUniform for (f32, f32, f32) {
-    fn into_uniform(&self) -> Value {
-        Value::Vec3([self.0, self.1, self.2])
+    fn into_uniform(&self) -> UniformValue {
+        UniformValue::Vec3([self.0, self.1, self.2])
     }
 }
 
@@ -208,8 +208,8 @@ impl TypeMark for (f32, f32, f32, f32) {
 }
 
 impl IntoUniform for (f32, f32, f32, f32) {
-    fn into_uniform(&self) -> Value {
-        Value::Vec4([self.0, self.1, self.2, self.3])
+    fn into_uniform(&self) -> UniformValue {
+        UniformValue::Vec4([self.0, self.1, self.2, self.3])
     }
 }
 

@@ -10,7 +10,7 @@ use super::gl::GlError;
 use super::settings::Settings;
 use super::texture::{Texture, TEXTURES_COUNT};
 use super::types::DataType;
-use crate::uniforms::{Uniforms, Value};
+use crate::uniforms::{Uniforms, UniformValue};
 
 #[repr(u32)]
 #[derive(Clone, Copy, Debug, TryFromPrimitive, IntoPrimitive, PartialEq, Eq)]
@@ -296,7 +296,7 @@ impl Program {
                 info.iter().find(|info| info.name == i.name).map(|info| {
                     let location = Some(&info.location);
                     match &i.value {
-                        Value::None => match info.data_type {
+                        UniformValue::None => match info.data_type {
                             DataType::Boolean => context.uniform1i(location, 0),
                             DataType::Float => context.uniform1f(location, 0.0),
                             DataType::Vec2 => {
@@ -324,23 +324,23 @@ impl Program {
                                 context.uniform1i(location, -1);
                             }
                         },
-                        Value::Boolean(value) => {
+                        UniformValue::Boolean(value) => {
                             context.uniform1i(location, if *value { 1 } else { 0 })
                         }
-                        Value::Float(value) => context.uniform1f(location, *value),
-                        Value::Vec2(value) => context.uniform2fv_with_f32_array(location, value),
-                        Value::Vec3(value) => context.uniform3fv_with_f32_array(location, value),
-                        Value::Vec4(value) => context.uniform4fv_with_f32_array(location, value),
-                        Value::Mat2(value) => {
+                        UniformValue::Float(value) => context.uniform1f(location, *value),
+                        UniformValue::Vec2(value) => context.uniform2fv_with_f32_array(location, value),
+                        UniformValue::Vec3(value) => context.uniform3fv_with_f32_array(location, value),
+                        UniformValue::Vec4(value) => context.uniform4fv_with_f32_array(location, value),
+                        UniformValue::Mat2(value) => {
                             context.uniform_matrix2fv_with_f32_array(location, false, value)
                         }
-                        Value::Mat3(value) => {
+                        UniformValue::Mat3(value) => {
                             context.uniform_matrix3fv_with_f32_array(location, false, value)
                         }
-                        Value::Mat4(value) => {
+                        UniformValue::Mat4(value) => {
                             context.uniform_matrix4fv_with_f32_array(location, false, value)
                         }
-                        Value::Texture(value) => {
+                        UniformValue::Texture(value) => {
                             context.uniform1i(location, textures.len().try_into().unwrap());
                             textures.push(value.clone())
                         }

@@ -1,6 +1,6 @@
 [package]
 name = "webgl-rc"
-version = "0.1.2"
+version = "0.1.3"
 authors = ["Andrei Monkin <monkin.andrey@gmail.com>"]
 repository = "https://github.com/monkin/webgl-rc"
 description = "WebGL wrapper with resources reference counting"
@@ -9,7 +9,6 @@ edition = "2018"
 
 [dependencies]
 wasm-bindgen = "0.2.81"
-console_error_panic_hook = { version = "0.1.7", optional = true }
 js-sys = "0.3.58"
 num_enum = "0.5.7"
 webgl-rc-macro = { path = "../webgl-rc-macro", version = "0.1.2" }

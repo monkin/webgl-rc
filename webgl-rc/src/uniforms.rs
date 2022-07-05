@@ -1,7 +1,7 @@
 use super::texture::Texture;
 
 #[derive(Clone, Debug)]
-pub enum Value {
+pub enum UniformValue {
     None,
     Boolean(bool),
     Float(f32),
@@ -17,11 +17,11 @@ pub enum Value {
 #[derive(Clone, Debug)]
 pub struct Field {
     pub name: &'static str,
-    pub value: Value,
+    pub value: UniformValue,
 }
 
 pub trait IntoUniform {
-    fn into_uniform(&self) -> Value;
+    fn into_uniform(&self) -> UniformValue;
 }
 
 pub trait Uniforms {
