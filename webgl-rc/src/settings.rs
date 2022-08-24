@@ -77,6 +77,16 @@ impl Default for DepthFunction {
     }
 }
 
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+pub struct ColorMask(bool, bool, bool, bool);
+
+impl Default for ColorMask {
+    fn default() -> Self {
+        Self(true, true, true, true)
+    }
+}
+
+
 #[derive(Clone, Debug, Default)]
 pub struct SettingsCache {
     blend: BlendSetting,
@@ -96,6 +106,7 @@ pub struct SettingsCache {
     blend_function: BlendFunctionSetting,
     depth_function: DepthFunction,
     cull_face: CullFace,
+    color_mask: ColorMask,
 }
 
 pub trait Settings
@@ -267,6 +278,10 @@ where
 
     fn cull_face(self, cull_face: CullFace) -> ComposedSetting<Self, CullFace> {
         ComposedSetting(self, cull_face)
+    }
+
+    fn color_mask(self, r: bool, g: bool, b: bool, a: bool) -> ComposedSetting<Self, ColorMask> {
+        ComposedSetting(self, ColorMask(r, g, b, a))
     }
 }
 
@@ -811,5 +826,19 @@ impl CachedSettings for CullFace {
 
     fn write_cached(cache: &mut impl DerefMut<Target = SettingsCache>, value: &Self) {
         cache.cull_face = *value;
+    }
+}
+
+impl CachedSettings for ColorMask {
+    fn set(gl: &Gl, value: &Self) {
+        gl.context().color_mask(value.0, value.1, value.2, value.3);
+    }
+
+    fn read_cached(cache: &impl Deref<Target=SettingsCache>) -> Self {
+        cache.color_mask
+    }
+
+    fn write_cached(cache: &mut impl DerefMut<Target=SettingsCache>, value: &Self) {
+        cache.color_mask = *value;
     }
 }
