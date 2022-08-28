@@ -3,6 +3,7 @@ use std::cell::Cell;
 use std::marker::PhantomData;
 use std::rc::Rc;
 use web_sys::{WebGlBuffer, WebGlRenderingContext as Context, WebGlRenderingContext};
+use crate::buffer_usage::BufferUsage;
 
 use super::gl::{Gl, GlError};
 use super::settings::Settings;
@@ -11,17 +12,6 @@ use super::types::DataType;
 pub trait Writable: Copy {
     fn write(&self, output: &mut Vec<f32>);
     fn stride() -> usize;
-}
-
-#[repr(u32)]
-#[derive(Clone, Copy, Debug, TryFromPrimitive, IntoPrimitive, PartialEq, Eq)]
-pub enum BufferUsage {
-    /// The data store contents will be modified once and used at most a few times.
-    Stream = Context::STREAM_DRAW,
-    /// The data store contents will be modified once and used many times.
-    Static = Context::STATIC_DRAW,
-    /// The data store contents will be modified repeatedly and used many times.
-    Dynamic = Context::DYNAMIC_DRAW,
 }
 
 #[derive(Debug, Clone)]

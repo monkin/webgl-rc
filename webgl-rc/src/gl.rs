@@ -4,14 +4,15 @@ use std::rc::Rc;
 use wasm_bindgen::{JsCast, JsValue};
 use web_sys::{
     AngleInstancedArrays, ExtColorBufferHalfFloat, HtmlCanvasElement, OesTextureHalfFloat,
-    OesTextureHalfFloatLinear, WebGlRenderingContext as Context,
+    OesTextureHalfFloatLinear, OesElementIndexUint, WebGlRenderingContext as Context,
 };
 
-use super::data_buffer::{BufferUsage, ItemsBuffer};
+use super::data_buffer::ItemsBuffer;
 use super::program::Program;
 use super::settings::{EmptySetting, Settings, SettingsCache};
 use super::texture::{Texture, TextureContent, TextureFormat, TextureType};
 use crate::{DepthBuffer, FrameBuffer};
+use crate::buffer_usage::BufferUsage;
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum GlError {
@@ -73,6 +74,7 @@ pub(self) struct GlInfo {
     pub(self) ex_color_buffer_half_float: ExtColorBufferHalfFloat,
     pub(self) ex_texture_half_float: OesTextureHalfFloat,
     pub(self) ex_texture_half_float_linear: OesTextureHalfFloatLinear,
+    pub(self) ex_element_index_uint: OesElementIndexUint,
 }
 
 #[derive(Clone, Debug)]
@@ -111,6 +113,7 @@ impl Gl {
                     &context,
                     "OES_texture_half_float_linear",
                 )?,
+                ex_element_index_uint: Gl::get_extension(&context, "OES_element_index_uint")?,
                 settings_cache: Default::default(),
                 context,
             }),

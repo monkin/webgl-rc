@@ -1,6 +1,6 @@
 [package]
 name = "webgl-rc"
-version = "0.1.4"
+version = "0.1.5"
 authors = ["Andrei Monkin <monkin.andrey@gmail.com>"]
 repository = "https://github.com/monkin/webgl-rc"
 description = "WebGL wrapper with resources reference counting"
@@ -39,4 +39,5 @@ features = [
     "ExtColorBufferHalfFloat",
     "OesTextureHalfFloat",
     "OesTextureHalfFloatLinear",
+    "OesElementIndexUint"
 ]

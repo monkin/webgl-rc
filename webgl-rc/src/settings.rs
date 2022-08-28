@@ -12,7 +12,7 @@ use super::program::Program;
 use super::texture::Texture;
 use super::texture::TextureFilter;
 use crate::depth_buffer::DepthBuffer;
-use crate::FrameBuffer;
+use crate::{ElementBuffer, FrameBuffer};
 
 #[repr(u32)]
 #[derive(Clone, Copy, Debug, TryFromPrimitive, IntoPrimitive, PartialEq, Eq)]
@@ -92,6 +92,7 @@ pub struct SettingsCache {
     blend: BlendSetting,
     depth: DepthTestSetting,
     array_buffer: ArrayBufferSetting,
+    element_buffer: ElementBufferSetting,
     active_texture: ActiveTextureSetting,
     textures: [Option<Texture>; 16],
     enabled_attributes: EnabledAttributesSetting,
@@ -198,6 +199,10 @@ where
         array_buffer: ItemsBuffer<T>,
     ) -> ComposedSetting<Self, ArrayBufferSetting> {
         ComposedSetting(self, ArrayBufferSetting(Some(array_buffer.buffer)))
+    }
+
+    fn element_buffer(self, element_buffer: ElementBuffer) -> ComposedSetting<Self, ElementBufferSetting> {
+        ComposedSetting(self, ElementBufferSetting(Some(element_buffer)))
     }
 
     fn enabled_attributes(
@@ -439,6 +444,25 @@ impl CachedSettings for ArrayBufferSetting {
         cache.array_buffer = value.clone();
     }
 }
+
+#[derive(Clone, Debug, Default, PartialEq, Eq)]
+pub struct ElementBufferSetting(Option<ElementBuffer>);
+
+impl CachedSettings for ElementBufferSetting {
+    fn set(gl: &Gl, value: &Self) {
+        gl.context().bind_buffer(
+            Context::ELEMENT_ARRAY_BUFFER,
+            value.0.as_ref().map(|v| v.handle()).as_ref(),
+        );
+    }
+    fn read_cached(cache: &impl Deref<Target = SettingsCache>) -> Self {
+        cache.element_buffer.clone()
+    }
+    fn write_cached(cache: &mut impl DerefMut<Target = SettingsCache>, value: &Self) {
+        cache.element_buffer = value.clone();
+    }
+}
+
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct BlendSetting(bool);

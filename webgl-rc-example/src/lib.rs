@@ -4,8 +4,9 @@ use wasm_bindgen::prelude::*;
 use web_sys::HtmlCanvasElement;
 
 use webgl_rc::{
-    load_glsl, Attributes, BufferUsage, Gl, ItemsBuffer, PrimitiveType, Program, Settings, Uniforms,
+    Attributes, Gl, ItemsBuffer, load_glsl, PrimitiveType, Program, Settings, Uniforms,
 };
+use webgl_rc::buffer_usage::BufferUsage;
 
 mod utils;
 
