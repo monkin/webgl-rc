@@ -1,3 +1,4 @@
+use crate::ElementBuffer;
 use core::convert::TryFrom;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 use std::convert::TryInto;
@@ -10,7 +11,7 @@ use super::gl::GlError;
 use super::settings::Settings;
 use super::texture::{Texture, TEXTURES_COUNT};
 use super::types::DataType;
-use crate::uniforms::{Uniforms, UniformValue};
+use crate::uniforms::{UniformValue, Uniforms};
 
 #[repr(u32)]
 #[derive(Clone, Copy, Debug, TryFromPrimitive, IntoPrimitive, PartialEq, Eq)]
@@ -328,9 +329,15 @@ impl Program {
                             context.uniform1i(location, if *value { 1 } else { 0 })
                         }
                         UniformValue::Float(value) => context.uniform1f(location, *value),
-                        UniformValue::Vec2(value) => context.uniform2fv_with_f32_array(location, value),
-                        UniformValue::Vec3(value) => context.uniform3fv_with_f32_array(location, value),
-                        UniformValue::Vec4(value) => context.uniform4fv_with_f32_array(location, value),
+                        UniformValue::Vec2(value) => {
+                            context.uniform2fv_with_f32_array(location, value)
+                        }
+                        UniformValue::Vec3(value) => {
+                            context.uniform3fv_with_f32_array(location, value)
+                        }
+                        UniformValue::Vec4(value) => {
+                            context.uniform4fv_with_f32_array(location, value)
+                        }
                         UniformValue::Mat2(value) => {
                             context.uniform_matrix2fv_with_f32_array(location, false, value)
                         }
@@ -395,6 +402,66 @@ impl Program {
                 });
             });
         });
+    }
+
+    pub fn draw_element_arrays<T: Item, U: Uniforms>(
+        &self,
+        primitive_type: PrimitiveType,
+        uniforms: &U,
+        attributes: &ItemsBuffer<T>,
+        elements: &ElementBuffer,
+    ) {
+        let gl = &self.data.gl;
+        gl.apply(
+            Gl::settings()
+                .program(self.clone())
+                .element_buffer(elements.clone()),
+            || {
+                self.enable_attributes(|| {
+                    self.set_uniforms(uniforms, || {
+                        self.set_attributes(attributes);
+                        gl.context().draw_elements_with_i32(
+                            primitive_type.into(),
+                            elements.len() as i32,
+                            WebGlRenderingContext::UNSIGNED_INT,
+                            0,
+                        )
+                    });
+                });
+            },
+        );
+    }
+
+    pub fn draw_element_instances<T: Item, I: Item, U: Uniforms>(
+        &self,
+        primitive_type: PrimitiveType,
+        uniforms: &U,
+        attributes: &ItemsBuffer<T>,
+        elements: &ElementBuffer,
+        instances: &ItemsBuffer<I>,
+    ) {
+        let gl = &self.data.gl;
+        gl.apply(
+            Gl::settings()
+                .program(self.clone())
+                .element_buffer(elements.clone()),
+            || {
+                self.enable_attributes(|| {
+                    self.set_uniforms(uniforms, || {
+                        self.set_attributes(attributes);
+                        self.set_attributes(instances);
+                        gl.instanced_arrays()
+                            .draw_elements_instanced_angle_with_i32(
+                                primitive_type.into(),
+                                elements.len() as i32,
+                                WebGlRenderingContext::UNSIGNED_INT,
+                                0,
+                                instances.len() as i32,
+                            );
+                    });
+                });
+            },
+        );
     }
 
     pub fn vertex_source(&self) -> &String {
