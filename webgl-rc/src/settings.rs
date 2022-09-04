@@ -12,7 +12,7 @@ use super::program::Program;
 use super::texture::Texture;
 use super::texture::TextureFilter;
 use crate::depth_buffer::DepthBuffer;
-use crate::{ElementBuffer, FrameBuffer};
+use crate::{ElementsBuffer, FrameBuffer};
 
 #[repr(u32)]
 #[derive(Clone, Copy, Debug, TryFromPrimitive, IntoPrimitive, PartialEq, Eq)]
@@ -85,7 +85,6 @@ impl Default for ColorMask {
         Self(true, true, true, true)
     }
 }
-
 
 #[derive(Clone, Debug, Default)]
 pub struct SettingsCache {
@@ -201,7 +200,10 @@ where
         ComposedSetting(self, ArrayBufferSetting(Some(array_buffer.buffer)))
     }
 
-    fn element_buffer(self, element_buffer: ElementBuffer) -> ComposedSetting<Self, ElementBufferSetting> {
+    fn element_buffer(
+        self,
+        element_buffer: ElementsBuffer,
+    ) -> ComposedSetting<Self, ElementBufferSetting> {
         ComposedSetting(self, ElementBufferSetting(Some(element_buffer)))
     }
 
@@ -446,7 +448,7 @@ impl CachedSettings for ArrayBufferSetting {
 }
 
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
-pub struct ElementBufferSetting(Option<ElementBuffer>);
+pub struct ElementBufferSetting(Option<ElementsBuffer>);
 
 impl CachedSettings for ElementBufferSetting {
     fn set(gl: &Gl, value: &Self) {
@@ -462,7 +464,6 @@ impl CachedSettings for ElementBufferSetting {
         cache.element_buffer = value.clone();
     }
 }
-
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct BlendSetting(bool);
@@ -858,11 +859,11 @@ impl CachedSettings for ColorMask {
         gl.context().color_mask(value.0, value.1, value.2, value.3);
     }
 
-    fn read_cached(cache: &impl Deref<Target=SettingsCache>) -> Self {
+    fn read_cached(cache: &impl Deref<Target = SettingsCache>) -> Self {
         cache.color_mask
     }
 
-    fn write_cached(cache: &mut impl DerefMut<Target=SettingsCache>, value: &Self) {
+    fn write_cached(cache: &mut impl DerefMut<Target = SettingsCache>, value: &Self) {
         cache.color_mask = *value;
     }
 }

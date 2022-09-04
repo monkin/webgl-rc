@@ -1,4 +1,4 @@
-use crate::ElementBuffer;
+use crate::ElementsBuffer;
 use core::convert::TryFrom;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 use std::convert::TryInto;
@@ -409,7 +409,7 @@ impl Program {
         primitive_type: PrimitiveType,
         uniforms: &U,
         attributes: &ItemsBuffer<T>,
-        elements: &ElementBuffer,
+        elements: &ElementsBuffer,
     ) {
         let gl = &self.data.gl;
         gl.apply(
@@ -437,7 +437,7 @@ impl Program {
         primitive_type: PrimitiveType,
         uniforms: &U,
         attributes: &ItemsBuffer<T>,
-        elements: &ElementBuffer,
+        elements: &ElementsBuffer,
         instances: &ItemsBuffer<I>,
     ) {
         let gl = &self.data.gl;

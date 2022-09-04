@@ -3,16 +3,16 @@ use std::cell::RefCell;
 use std::rc::Rc;
 use wasm_bindgen::{JsCast, JsValue};
 use web_sys::{
-    AngleInstancedArrays, ExtColorBufferHalfFloat, HtmlCanvasElement, OesTextureHalfFloat,
-    OesTextureHalfFloatLinear, OesElementIndexUint, WebGlRenderingContext as Context,
+    AngleInstancedArrays, ExtColorBufferHalfFloat, HtmlCanvasElement, OesElementIndexUint,
+    OesTextureHalfFloat, OesTextureHalfFloatLinear, WebGlRenderingContext as Context,
 };
 
 use super::data_buffer::ItemsBuffer;
 use super::program::Program;
 use super::settings::{EmptySetting, Settings, SettingsCache};
 use super::texture::{Texture, TextureContent, TextureFormat, TextureType};
-use crate::{DepthBuffer, FrameBuffer};
 use crate::buffer_usage::BufferUsage;
+use crate::{DepthBuffer, ElementsBuffer, FrameBuffer};
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum GlError {
@@ -145,6 +145,14 @@ impl Gl {
         I: super::data_buffer::Item,
     {
         ItemsBuffer::new(self.clone(), data, usage)
+    }
+
+    pub fn elements_buffer(
+        &self,
+        data: &[u32],
+        usage: BufferUsage,
+    ) -> Result<ElementsBuffer, GlError> {
+        ElementsBuffer::new(self.clone(), data, usage)
     }
 
     pub fn clear_color_buffer(&self) {

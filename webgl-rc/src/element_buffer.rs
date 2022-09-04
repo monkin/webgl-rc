@@ -1,8 +1,8 @@
+use crate::settings::Settings;
+use crate::{BufferUsage, Gl, GlError};
 use std::cell::Cell;
 use std::rc::Rc;
 use web_sys::{WebGlBuffer, WebGlRenderingContext};
-use crate::{BufferUsage, Gl, GlError};
-use crate::settings::Settings;
 
 #[derive(Debug, Clone)]
 pub struct ElementBufferData {
@@ -18,30 +18,26 @@ impl Drop for ElementBufferData {
 }
 
 #[derive(Debug, Clone)]
-pub struct ElementBuffer {
+pub struct ElementsBuffer {
     pub(self) data: Rc<ElementBufferData>,
 }
 
-impl PartialEq<ElementBuffer> for ElementBuffer {
-    fn eq(&self, other: &ElementBuffer) -> bool {
+impl PartialEq<ElementsBuffer> for ElementsBuffer {
+    fn eq(&self, other: &ElementsBuffer) -> bool {
         self.data.handle == other.data.handle
     }
 }
 
-impl Eq for ElementBuffer {}
+impl Eq for ElementsBuffer {}
 
-impl ElementBuffer {
-    pub fn new(
-        gl: Gl,
-        data: &[u32],
-        usage: BufferUsage,
-    ) -> Result<ElementBuffer, GlError> {
+impl ElementsBuffer {
+    pub fn new(gl: Gl, data: &[u32], usage: BufferUsage) -> Result<ElementsBuffer, GlError> {
         let ref context: &WebGlRenderingContext = gl.context();
         let buffer = context
             .create_buffer()
             .ok_or(GlError::BufferAllocationError)?;
 
-        let result = ElementBuffer {
+        let result = ElementsBuffer {
             data: Rc::new(ElementBufferData {
                 gl: gl.clone(),
                 handle: buffer,
