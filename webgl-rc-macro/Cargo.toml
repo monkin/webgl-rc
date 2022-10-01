@@ -1,6 +1,6 @@
 [package]
 name = "webgl-rc-macro"
-version = "0.1.2"
+version = "0.1.3"
 authors = ["Andrei Monkin <monkin.andrey@gmail.com>"]
 repository = "https://github.com/monkin/webgl-rc"
 description = "GLSL loading macro for webgl-rc"
@@ -11,4 +11,4 @@ edition = "2018"
 proc-macro = true
 
 [dependencies]
-regex = "1.5.6"
+regex = "1.6.0"
