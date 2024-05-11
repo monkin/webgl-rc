@@ -1,9 +1,8 @@
-use num_enum::{IntoPrimitive, TryFromPrimitive};
+use crate::buffer_usage::BufferUsage;
 use std::cell::Cell;
 use std::marker::PhantomData;
 use std::rc::Rc;
 use web_sys::{WebGlBuffer, WebGlRenderingContext as Context, WebGlRenderingContext};
-use crate::buffer_usage::BufferUsage;
 
 use super::gl::{Gl, GlError};
 use super::settings::Settings;

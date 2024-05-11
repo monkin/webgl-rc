@@ -1,6 +1,9 @@
 #[cfg(feature = "nalgebra-glm")]
 extern crate nalgebra_glm as glm;
 
+#[cfg(feature = "nalgebra-glm")]
+mod nalgebra;
+
 pub mod buffer_usage;
 pub mod data_buffer;
 pub mod depth_buffer;
@@ -8,7 +11,6 @@ pub mod element_buffer;
 pub mod frame_buffer;
 pub mod gl;
 pub mod impls;
-mod nalgebra;
 pub mod program;
 pub mod settings;
 pub mod texture;
@@ -21,6 +23,7 @@ pub use depth_buffer::*;
 pub use element_buffer::*;
 pub use frame_buffer::*;
 pub use gl::*;
+use glm::Mat3;
 pub use program::*;
 pub use settings::*;
 pub use texture::*;
