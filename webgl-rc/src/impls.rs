@@ -4,6 +4,7 @@ use super::types::{DataType, TypeMark};
 use crate::uniforms::{IntoUniform, UniformValue};
 
 // f32
+
 impl Writable for f32 {
     fn write(&self, output: &mut Vec<f32>) {
         output.push(*self);

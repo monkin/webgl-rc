@@ -8,6 +8,7 @@ pub mod element_buffer;
 pub mod frame_buffer;
 pub mod gl;
 pub mod impls;
+mod nalgebra;
 pub mod program;
 pub mod settings;
 pub mod texture;
