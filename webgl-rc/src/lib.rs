@@ -23,7 +23,6 @@ pub use depth_buffer::*;
 pub use element_buffer::*;
 pub use frame_buffer::*;
 pub use gl::*;
-use glm::Mat3;
 pub use program::*;
 pub use settings::*;
 pub use texture::*;
