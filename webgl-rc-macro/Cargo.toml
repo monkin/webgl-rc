@@ -11,4 +11,4 @@ edition = "2018"
 proc-macro = true
 
 [dependencies]
-regex = "1.7.1"
+regex = "^1.10.4"

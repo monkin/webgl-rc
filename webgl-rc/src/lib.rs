@@ -1,3 +1,6 @@
+#[cfg(feature = "nalgebra-glm")]
+extern crate nalgebra_glm as glm;
+
 pub mod buffer_usage;
 pub mod data_buffer;
 pub mod depth_buffer;
