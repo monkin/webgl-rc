@@ -394,7 +394,7 @@ dependencies = [
 
 [[package]]
 name = "webgl-rc"
-version = "0.1.10"
+version = "0.1.11"
 dependencies = [
  "js-sys",
  "nalgebra-glm",

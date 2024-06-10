@@ -244,8 +244,9 @@ impl Program {
         self.data.handle.clone()
     }
 
-    pub(self) fn set_attributes<T: Item>(&self, buffer: &ItemsBuffer<T>) {
+    pub(self) fn set_attributes<T: Item>(&self, buffer: &ItemsBuffer<T>, divisor: u32) {
         let gl: &WebGlRenderingContext = self.data.gl.context();
+        let instanced = self.data.gl.instanced_arrays();
         let mut offset: usize = 0;
 
         self.data.gl.apply(
@@ -266,6 +267,7 @@ impl Program {
                                 (T::stride() * 4).try_into().unwrap(),
                                 (offset * 4).try_into().unwrap(),
                             );
+                            instanced.vertex_attrib_divisor_angle(info.location, divisor)
                         });
                     offset += item.data_type.size_in_floats().unwrap();
                 }
@@ -369,7 +371,7 @@ impl Program {
         gl.apply(Gl::settings().program(self.clone()), || {
             self.enable_attributes(|| {
                 self.set_uniforms(uniforms, || {
-                    self.set_attributes(attributes);
+                    self.set_attributes(attributes, 0);
                     gl.context().draw_arrays(
                         primitive_type.into(),
                         0,
@@ -391,8 +393,8 @@ impl Program {
         gl.apply(Gl::settings().program(self.clone()), || {
             self.enable_attributes(|| {
                 self.set_uniforms(uniforms, || {
-                    self.set_attributes(attributes);
-                    self.set_attributes(instances);
+                    self.set_attributes(attributes, 0);
+                    self.set_attributes(instances, 1);
                     gl.instanced_arrays().draw_arrays_instanced_angle(
                         primitive_type.into(),
                         0,
@@ -419,7 +421,7 @@ impl Program {
             || {
                 self.enable_attributes(|| {
                     self.set_uniforms(uniforms, || {
-                        self.set_attributes(attributes);
+                        self.set_attributes(attributes, 0);
                         gl.context().draw_elements_with_i32(
                             primitive_type.into(),
                             elements.len() as i32,
@@ -448,8 +450,8 @@ impl Program {
             || {
                 self.enable_attributes(|| {
                     self.set_uniforms(uniforms, || {
-                        self.set_attributes(attributes);
-                        self.set_attributes(instances);
+                        self.set_attributes(attributes, 0);
+                        self.set_attributes(instances, 1);
                         gl.instanced_arrays()
                             .draw_elements_instanced_angle_with_i32(
                                 primitive_type.into(),
